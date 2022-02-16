@@ -36,8 +36,9 @@ const LoginScreen = ({navigation}) => {
       setEmailValidation(true);
     }
   };
-  const {number} = useSelector(state => state.login);
+  const {number, loginResponse} = useSelector(state => state.login);
   const dispatch = useDispatch();
+  console.log(loginResponse, 'login response in component');
 
   return (
     <View style={container}>

@@ -6,6 +6,9 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
+import {useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
+import {userRegister} from '../../Redux/Login';
 import {Color} from '../../Styles';
 import SolidButton from '../Components/SolidButton';
 
@@ -25,6 +28,23 @@ const RegisterScreen = ({navigation}) => {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [number, setNumber] = useState('');
+  // let data = new FormData();
+  // data.append('user_first_name', firstName);
+  // data.append('user_last_name', lastName);
+  // data.append('user_email_id', email);
+  // data.append('user_phone_number', number);
+  // data.append('user_source', 'android');
+  let data = {
+    user_first_name: firstName,
+    user_last_name: lastName,
+    user_email_id: email,
+    user_phone_number: number,
+    user_source: 'android',
+    navigation: navigation,
+  };
+  const dispatch = useDispatch();
+  const {registerResponse} = useSelector(state => state.login);
+  // console.log(registerResponse, 'register response in screen');
   return (
     <View style={[container]}>
       <Text style={[textHead]}>Sign Up</Text>
@@ -38,7 +58,7 @@ const RegisterScreen = ({navigation}) => {
             placeholder="First Name"
             value={firstName}
             onChangeText={firstName => {
-              this.firstNameCheck(firstName.trim());
+              // this.firstNameCheck(firstName.trim());
               setFirstName(firstName.trim());
             }}
           />
@@ -54,7 +74,7 @@ const RegisterScreen = ({navigation}) => {
             placeholder="Last Name"
             value={lastName}
             onChangeText={lastName => {
-              this.lastNameCheck(lastName.trim());
+              // this.lastNameCheck(lastName.trim());
               setLastName(lastName.trim());
             }}
           />
@@ -71,7 +91,7 @@ const RegisterScreen = ({navigation}) => {
             keyboardType="email-address"
             value={email}
             onChangeText={email => {
-              this.emailCheck(email.trim());
+              // this.emailCheck(email.trim());
               setEmail(email.trim());
             }}
           />
@@ -89,7 +109,7 @@ const RegisterScreen = ({navigation}) => {
             keyboardType={'number-pad'}
             value={number}
             onChangeText={number => {
-              this.numberCheck(number.trim());
+              // this.numberCheck(number.trim());
               setNumber(number.trim());
             }}
           />
@@ -106,11 +126,12 @@ const RegisterScreen = ({navigation}) => {
             buttonLabel="Sign up"
             buttonColor="green"
             onPress={() => {
-              this.firstNameCheck(firstName);
-              this.lastNameCheck(lastName);
-              this.emailCheck(email);
-              this.numberCheck();
-              this.apiCheck();
+              dispatch(userRegister(data));
+              // this.firstNameCheck(firstName);
+              // this.lastNameCheck(lastName);
+              // this.emailCheck(email);
+              // this.numberCheck();
+              // this.apiCheck();
             }}
           />
         </View>
