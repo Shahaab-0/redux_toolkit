@@ -11,6 +11,7 @@ import {useDispatch} from 'react-redux';
 import {userRegister} from '../../Redux/Login';
 import {Color} from '../../Styles';
 import SolidButton from '../Components/SolidButton';
+import Spinner from '../Components/Spinnder';
 
 const RegisterScreen = ({navigation}) => {
   const {
@@ -43,10 +44,11 @@ const RegisterScreen = ({navigation}) => {
     navigation: navigation,
   };
   const dispatch = useDispatch();
-  const {registerResponse} = useSelector(state => state.login);
+  const {registerResponse, loadingToggle} = useSelector(state => state.login);
   // console.log(registerResponse, 'register response in screen');
   return (
     <View style={[container]}>
+      {loadingToggle ? <Spinner /> : null}
       <Text style={[textHead]}>Sign Up</Text>
 
       <View>

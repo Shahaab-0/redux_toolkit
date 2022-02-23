@@ -11,10 +11,12 @@ import {useSelector} from 'react-redux';
 import {getLogin} from '../../Redux/Login';
 import {Color} from '../../Styles';
 import SolidButton from '../Components/SolidButton';
+import Spinner from '../Components/Spinnder';
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmtail] = useState('');
-  console.log(email, 'email');
+  const data = {user_email_id: email, navigation: navigation};
+  //data is the formdata used in api call
   const [emailValidation, setEmailValidation] = useState(true);
   const {
     container,
@@ -36,54 +38,59 @@ const LoginScreen = ({navigation}) => {
       setEmailValidation(true);
     }
   };
-  const {number, loginResponse} = useSelector(state => state.login);
+  //useSelecter is used to select the global state where .login is the name of that slice
+  const {loadingToggle} = useSelector(state => state.login);
+
   const dispatch = useDispatch();
-  console.log(loginResponse, 'login response in component');
 
   return (
     <View style={container}>
+      {loadingToggle ? <Spinner /> : null}
       <View>
-        <Text style={[textHead]}>Log in</Text>
-      </View>
-      <View style={inputContainer}>
-        <TextInput
-          placeholderTextColor={'#b4b7b8'}
-          maxLength={isNaN(email) ? null : 10}
-          style={[
-            input,
-            emailValidation === false
-              ? {backgroundColor: Color.lightRed}
-              : {backgroundColor: Color.lightGrey},
-          ]}
-          placeholder="Email or Phone Number"
-          keyboardType="email-address"
-          value={email}
-          onChangeText={email => {
-            emailCheck(email.trim());
-            setEmtail(email.trim());
-          }}
-        />
-        {emailValidation === false ? (
-          <Text style={validationText}>
-            Please enter valid Email Id / Mobile Number
-          </Text>
-        ) : null}
-      </View>
-      <View>
-        <SolidButton
-          buttonLabel="Login"
-          buttonColor="green"
-          onPress={() => dispatch(getLogin(email))}
-        />
-      </View>
-      <View style={signUpContainer}>
-        <View style={row}>
-          <Text style={[textLight]}>Not a member? </Text>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('RegisterScreen')}
-            activeOpacity={0.6}>
-            <Text style={[textDark]}>Join now</Text>
-          </TouchableOpacity>
+        <View>
+          <Text style={[textHead]}>Log in</Text>
+        </View>
+        <View style={inputContainer}>
+          <TextInput
+            placeholderTextColor={'#b4b7b8'}
+            maxLength={isNaN(email) ? null : 10}
+            style={[
+              input,
+              emailValidation === false
+                ? {backgroundColor: Color.lightRed}
+                : {backgroundColor: Color.lightGrey},
+            ]}
+            placeholder="Email or Phone Number"
+            keyboardType="email-address"
+            value={email}
+            onChangeText={email => {
+              emailCheck(email.trim());
+              setEmtail(email.trim());
+            }}
+          />
+          {emailValidation === false ? (
+            <Text style={validationText}>
+              Please enter valid Email Id / Mobile Number
+            </Text>
+          ) : null}
+        </View>
+        <View>
+          <SolidButton
+            buttonLabel="Login"
+            buttonColor="green"
+            //useDispatch is used to call the function in the redux file
+            onPress={() => dispatch(getLogin(data))}
+          />
+        </View>
+        <View style={signUpContainer}>
+          <View style={row}>
+            <Text style={[textLight]}>Not a member? </Text>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('RegisterScreen')}
+              activeOpacity={0.6}>
+              <Text style={[textDark]}>Join now</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </View>

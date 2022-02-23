@@ -14,6 +14,7 @@ import {Color} from './Styles';
 
 const App = ({navigation}) => {
   return (
+    //store is the combination of multiple reducers
     <Provider store={store}>
       <MyStack />
     </Provider>
